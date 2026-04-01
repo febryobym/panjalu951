@@ -9,14 +9,14 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
 
 export default function App() {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.play().catch((error) => {
-          console.log("Autoplay was prevented. User interaction required.", error);
+          console.log("Playback was prevented. User interaction required.", error);
           setIsPlaying(false);
         });
       } else {
@@ -42,14 +42,13 @@ export default function App() {
           <button className="p-2 hover:bg-yellow-500/10 rounded-full transition-colors">
             <Menu className="w-6 h-6 text-yellow-400" />
           </button>
-          <div className="flex items-center gap-2">
-            <div className="flex flex-col leading-none">
-              <span className="font-black text-2xl tracking-tighter text-white italic">PANJALU</span>
-              <div className="flex items-center gap-1">
-                <span className="font-bold text-xs tracking-[0.2em] text-yellow-400 uppercase">95.1 FM</span>
-                <div className="h-1 w-8 bg-yellow-400 rounded-full" />
-              </div>
-            </div>
+          <div className="flex items-center gap-3">
+            <img 
+              src="https://lh3.googleusercontent.com/d/1_0yNOcohGEA9AyV-j-cMRl70tRsaIGjZ" 
+              alt="Radio Panjalu Logo" 
+              className="h-10 w-auto object-contain"
+              referrerPolicy="no-referrer"
+            />
           </div>
         </div>
         
@@ -141,7 +140,6 @@ export default function App() {
               ref={audioRef} 
               src="http://ics.streamingmurah.com:8130/stream" 
               preload="auto"
-              crossOrigin="anonymous"
             />
             {/* Animated Background Grid */}
             <div className="absolute inset-0 opacity-20" 
