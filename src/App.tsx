@@ -10,41 +10,20 @@ import { cn } from './lib/utils';
 
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isAutoplayBlocked, setIsAutoplayBlocked] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    const playAudio = async () => {
-      if (audioRef.current) {
-        try {
-          if (isPlaying) {
-            await audioRef.current.play();
-            setIsAutoplayBlocked(false);
-          } else {
-            audioRef.current.pause();
-          }
-        } catch (error) {
-          console.log("Autoplay blocked or failed:", error);
-          setIsAutoplayBlocked(true);
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch((error) => {
+          console.log("Autoplay was prevented. User interaction required.", error);
           setIsPlaying(false);
-        }
+        });
+      } else {
+        audioRef.current.pause();
       }
-    };
-    playAudio();
+    }
   }, [isPlaying]);
-
-  // Handle first interaction to resume audio if blocked
-  useEffect(() => {
-    const handleFirstInteraction = () => {
-      if (isAutoplayBlocked) {
-        setIsPlaying(true);
-        setIsAutoplayBlocked(false);
-      }
-      window.removeEventListener('click', handleFirstInteraction);
-    };
-    window.addEventListener('click', handleFirstInteraction);
-    return () => window.removeEventListener('click', handleFirstInteraction);
-  }, [isAutoplayBlocked]);
 
   const navItems = [
     "Berita",
@@ -160,7 +139,7 @@ export default function App() {
           <section className="relative aspect-square rounded-3xl overflow-hidden bg-zinc-900 border-2 border-yellow-400/30 shadow-[0_0_50px_-12px_rgba(250,204,21,0.2)]">
             <audio 
               ref={audioRef} 
-              src="http://45.64.97.82:8130/stream" 
+              src="http://ics.streamingmurah.com:8130/stream" 
               preload="auto"
               crossOrigin="anonymous"
             />
@@ -195,43 +174,18 @@ export default function App() {
                     )}
                   </AnimatePresence>
                   
-                  <div className="flex items-center gap-4 relative z-10">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => setIsPlaying(true)}
-                      className={cn(
-                        "w-24 h-24 rounded-full flex items-center justify-center shadow-lg transition-all",
-                        isPlaying ? "bg-yellow-400 shadow-yellow-400/40" : "bg-zinc-800 text-zinc-400"
-                      )}
-                    >
-                      <Play className={cn("w-10 h-10 fill-current ml-1", isPlaying ? "text-black" : "text-zinc-400")} />
-                    </motion.button>
-
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => setIsPlaying(false)}
-                      className={cn(
-                        "w-24 h-24 rounded-full flex items-center justify-center shadow-lg transition-all",
-                        !isPlaying ? "bg-red-500 shadow-red-500/40" : "bg-zinc-800 text-zinc-400"
-                      )}
-                    >
-                      <Pause className={cn("w-10 h-10 fill-current", !isPlaying ? "text-white" : "text-zinc-400")} />
-                    </motion.button>
-                  </div>
-
-                  {isAutoplayBlocked && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap"
-                    >
-                      <span className="text-[10px] font-black text-yellow-400 uppercase tracking-widest bg-black/80 px-3 py-1 rounded-full border border-yellow-400/20">
-                        Klik untuk Memutar
-                      </span>
-                    </motion.div>
-                  )}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    className="relative z-10 w-32 h-32 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(250,204,21,0.4)]"
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-12 h-12 text-black fill-current" />
+                    ) : (
+                      <Play className="w-12 h-12 text-black fill-current ml-1" />
+                    )}
+                  </motion.button>
                 </div>
                 
                 <div className="text-center">
@@ -292,16 +246,9 @@ export default function App() {
           <Instagram className="w-6 h-6" />
           <span className="text-[9px] font-black uppercase tracking-tighter">SOSMED</span>
         </button>
-        <button 
-          onClick={() => setIsPlaying(!isPlaying)}
-          className="w-12 h-12 -mt-10 bg-yellow-400 rounded-2xl rotate-45 flex items-center justify-center shadow-[0_0_20px_rgba(250,204,21,0.3)] hover:scale-110 transition-transform"
-        >
-          {isPlaying ? (
-            <Pause className="w-6 h-6 text-black -rotate-45 fill-current" />
-          ) : (
-            <Play className="w-6 h-6 text-black -rotate-45 ml-1 fill-current" />
-          )}
-        </button>
+        <div className="w-12 h-12 -mt-10 bg-yellow-400 rounded-2xl rotate-45 flex items-center justify-center shadow-[0_0_20px_rgba(250,204,21,0.3)]">
+          <Play className="w-6 h-6 text-black -rotate-45 ml-1 fill-current" />
+        </div>
         <button className="flex flex-col items-center gap-1 text-zinc-600 hover:text-yellow-400 transition-colors">
           <Search className="w-6 h-6" />
           <span className="text-[9px] font-black uppercase tracking-tighter">Cari</span>
