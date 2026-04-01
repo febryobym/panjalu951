@@ -187,7 +187,7 @@ export default function App() {
                 </div>
                 
                 <div className="text-center">
-                  <h2 className="text-2xl font-black italic tracking-tight text-white uppercase">Nang Kene Wae Nang Kene Wae</h2>
+                  <h2 className="text-2xl font-black italic tracking-tight text-white uppercase">Nang Kene Wae <br /> Nang Kene Wae</h2>
                   <p className="text-yellow-400 font-bold text-xs tracking-widest mt-1">PANJALU 95.1 FM</p>
                 </div>
               </div>
