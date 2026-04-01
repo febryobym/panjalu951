@@ -10,11 +10,13 @@ import { cn } from './lib/utils';
 
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
+        setHasError(false);
         audioRef.current.play().catch((error) => {
           console.log("Playback was prevented. User interaction required.", error);
           setIsPlaying(false);
@@ -140,6 +142,11 @@ export default function App() {
               ref={audioRef} 
               src="http://ics.streamingmurah.com:8130/stream" 
               preload="auto"
+              onPlay={() => setHasError(false)}
+              onError={() => {
+                setHasError(true);
+                setIsPlaying(false);
+              }}
             />
             {/* Animated Background Grid */}
             <div className="absolute inset-0 opacity-20" 
@@ -186,9 +193,21 @@ export default function App() {
                   </motion.button>
                 </div>
                 
-                <div className="text-center">
+                <div className="text-center px-4">
                   <h2 className="text-2xl font-black italic tracking-tight text-white uppercase">Nang Kene Wae <br /> Nang Kene Wae</h2>
                   <p className="text-yellow-400 font-bold text-xs tracking-widest mt-1">PANJALU 95.1 FM</p>
+                  
+                  {hasError && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-4 p-2 bg-red-500/20 border border-red-500/50 rounded-lg"
+                    >
+                      <p className="text-[10px] text-red-400 font-bold uppercase leading-tight">
+                        Gagal memuat siaran.<br />Pastikan izin "Insecure Content" aktif di browser Anda.
+                      </p>
+                    </motion.div>
+                  )}
                 </div>
               </div>
 
