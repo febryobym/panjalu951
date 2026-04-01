@@ -39,6 +39,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black font-sans text-white flex flex-col">
+      <audio 
+        ref={audioRef} 
+        src="http://ics.streamingmurah.com:8130/stream" 
+        preload="auto"
+        onPlay={() => setHasError(false)}
+        onError={() => {
+          setHasError(true);
+          setIsPlaying(false);
+        }}
+      />
       {/* Header - Dark & Sleek */}
       <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-yellow-500/20 px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -148,16 +158,6 @@ export default function App() {
               {/* Right Column: Player Section & Health News */}
               <div className="space-y-8 order-1 md:order-2">
                 <section className="relative aspect-square rounded-3xl overflow-hidden bg-zinc-900 border-2 border-yellow-400/30 shadow-[0_0_50px_-12px_rgba(250,204,21,0.2)]">
-                  <audio 
-                    ref={audioRef} 
-                    src="http://ics.streamingmurah.com:8130/stream" 
-                    preload="auto"
-                    onPlay={() => setHasError(false)}
-                    onError={() => {
-                      setHasError(true);
-                      setIsPlaying(false);
-                    }}
-                  />
                   {/* Animated Background Grid */}
                   <div className="absolute inset-0 opacity-20" 
                       style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #facc15 1px, transparent 0)', backgroundSize: '24px 24px' }} />
