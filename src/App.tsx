@@ -3,13 +3,27 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Menu, Search, Play, Pause, Radio, Tv, ChevronRight, Share2, Heart, MessageSquare, Instagram } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
 
 export default function App() {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch((error) => {
+          console.log("Autoplay was prevented. User interaction required.", error);
+          setIsPlaying(false);
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
 
   const navItems = [
     "Berita",
@@ -123,6 +137,12 @@ export default function App() {
         {/* Right Column: Player Section & Health News */}
         <div className="space-y-8 order-1 md:order-2">
           <section className="relative aspect-square rounded-3xl overflow-hidden bg-zinc-900 border-2 border-yellow-400/30 shadow-[0_0_50px_-12px_rgba(250,204,21,0.2)]">
+            <audio 
+              ref={audioRef} 
+              src="http://45.64.97.82:8130/stream" 
+              preload="auto"
+              crossOrigin="anonymous"
+            />
             {/* Animated Background Grid */}
             <div className="absolute inset-0 opacity-20" 
                  style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #facc15 1px, transparent 0)', backgroundSize: '24px 24px' }} />
