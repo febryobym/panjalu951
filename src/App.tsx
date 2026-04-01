@@ -74,7 +74,7 @@ export default function App() {
 
       {/* Navigation Bar - High Contrast Yellow */}
       <nav className="bg-yellow-400 overflow-x-auto no-scrollbar whitespace-nowrap px-4 py-3">
-        <div className="flex gap-8 items-center justify-center">
+        <div className="flex gap-8 items-center justify-start md:justify-center min-w-max md:min-w-0">
           {navItems.map((item, index) => (
             <a 
               key={index} 
