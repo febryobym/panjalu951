@@ -11,6 +11,7 @@ import { cn } from './lib/utils';
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [activeTab, setActiveTab] = useState<'radio' | 'sosmed'>('radio');
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-black font-sans text-white">
+    <div className="min-h-screen bg-black font-sans text-white flex flex-col">
       {/* Header - Dark & Sleek */}
       <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-yellow-500/20 px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -76,195 +77,257 @@ export default function App() {
         </div>
       </nav>
 
-      <main className="p-4 max-w-6xl mx-auto pb-24 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        {/* Left Column: News Section */}
-        <section className="space-y-6 order-2 md:order-1">
-          <div className="flex items-end justify-between border-b border-zinc-800 pb-2">
-            <div>
-              <h3 className="text-xs font-black text-yellow-400 uppercase tracking-widest">Headline</h3>
-              <h2 className="text-xl font-black italic">KABAR PANJALU</h2>
-            </div>
-            <button className="text-[10px] font-bold text-zinc-500 hover:text-yellow-400 flex items-center gap-1 transition-colors">
-              VIEW ALL <ChevronRight className="w-3 h-3" />
-            </button>
-          </div>
+      <main className="flex-1 overflow-y-auto no-scrollbar pb-32">
+        <AnimatePresence mode="wait">
+          {activeTab === 'radio' ? (
+            <motion.div
+              key="radio"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="p-4 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start"
+            >
+              {/* Left Column: News Section */}
+              <section className="space-y-6 order-2 md:order-1">
+                <div className="flex items-end justify-between border-b border-zinc-800 pb-2">
+                  <div>
+                    <h3 className="text-xs font-black text-yellow-400 uppercase tracking-widest">Headline</h3>
+                    <h2 className="text-xl font-black italic">KABAR PANJALU</h2>
+                  </div>
+                  <button className="text-[10px] font-bold text-zinc-500 hover:text-yellow-400 flex items-center gap-1 transition-colors">
+                    VIEW ALL <ChevronRight className="w-3 h-3" />
+                  </button>
+                </div>
 
-          <div className="group relative rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-yellow-400/50 transition-all">
-            <div className="aspect-video overflow-hidden">
-              <img 
-                src="https://picsum.photos/seed/panjalu1/800/450" 
-                alt="News" 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-[10px] font-black text-black bg-yellow-400 px-2 py-0.5 rounded">BUDAYA</span>
-                <span className="text-[10px] font-bold text-zinc-500">12 MENIT LALU</span>
-              </div>
-              <h3 className="text-lg font-black leading-tight text-white group-hover:text-yellow-400 transition-colors">
-                Festival Budaya Panjalu Kembali Digelar di Kawasan Wisata Selomangleng
-              </h3>
-            </div>
-          </div>
+                <div className="group relative rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-yellow-400/50 transition-all">
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src="https://picsum.photos/seed/panjalu1/800/450" 
+                      alt="News" 
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-[10px] font-black text-black bg-yellow-400 px-2 py-0.5 rounded">BUDAYA</span>
+                      <span className="text-[10px] font-bold text-zinc-500">12 MENIT LALU</span>
+                    </div>
+                    <h3 className="text-lg font-black leading-tight text-white group-hover:text-yellow-400 transition-colors">
+                      Festival Budaya Panjalu Kembali Digelar di Kawasan Wisata Selomangleng
+                    </h3>
+                  </div>
+                </div>
 
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex items-center gap-4 py-2">
-              <span className="text-[10px] font-black text-yellow-400 uppercase tracking-[0.4em] whitespace-nowrap">NEWS</span>
-              <div className="h-[1px] w-full bg-zinc-800" />
-            </div>
-            {[1, 2].map((i) => (
-              <div key={i} className="flex gap-4 p-4 rounded-2xl bg-zinc-900/50 border border-zinc-800 hover:border-yellow-400/30 transition-all">
-                <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
-                  <img 
-                    src={`https://picsum.photos/seed/pj${i}/300/300`} 
-                    alt="News" 
-                    className="w-full h-full object-cover grayscale"
-                    referrerPolicy="no-referrer"
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="flex items-center gap-4 py-2">
+                    <span className="text-[10px] font-black text-yellow-400 uppercase tracking-[0.4em] whitespace-nowrap">NEWS</span>
+                    <div className="h-[1px] w-full bg-zinc-800" />
+                  </div>
+                  {[1, 2].map((i) => (
+                    <div key={i} className="flex gap-4 p-4 rounded-2xl bg-zinc-900/50 border border-zinc-800 hover:border-yellow-400/30 transition-all">
+                      <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                        <img 
+                          src={`https://picsum.photos/seed/pj${i}/300/300`} 
+                          alt="News" 
+                          className="w-full h-full object-cover grayscale"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <div className="flex flex-col justify-center">
+                        <span className="text-[9px] font-black text-yellow-400 uppercase tracking-widest mb-1">Update</span>
+                        <h4 className="font-bold text-sm leading-snug text-zinc-100 line-clamp-2">
+                          Laporan Khusus: Menjaga Tradisi Wayang Orang di Era Digital
+                        </h4>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Right Column: Player Section & Health News */}
+              <div className="space-y-8 order-1 md:order-2">
+                <section className="relative aspect-square rounded-3xl overflow-hidden bg-zinc-900 border-2 border-yellow-400/30 shadow-[0_0_50px_-12px_rgba(250,204,21,0.2)]">
+                  <audio 
+                    ref={audioRef} 
+                    src="http://ics.streamingmurah.com:8130/stream" 
+                    preload="auto"
+                    onPlay={() => setHasError(false)}
+                    onError={() => {
+                      setHasError(true);
+                      setIsPlaying(false);
+                    }}
                   />
-                </div>
-                <div className="flex flex-col justify-center">
-                  <span className="text-[9px] font-black text-yellow-400 uppercase tracking-widest mb-1">Update</span>
-                  <h4 className="font-bold text-sm leading-snug text-zinc-100 line-clamp-2">
-                    Laporan Khusus: Menjaga Tradisi Wayang Orang di Era Digital
-                  </h4>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+                  {/* Animated Background Grid */}
+                  <div className="absolute inset-0 opacity-20" 
+                      style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #facc15 1px, transparent 0)', backgroundSize: '24px 24px' }} />
+                  
+                  <div className="absolute inset-0 flex flex-col items-center justify-between p-8">
+                    <div className="w-full flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                        <span className="text-[10px] font-black tracking-[0.3em] text-yellow-400 uppercase">Live Now</span>
+                      </div>
+                      <div className="flex gap-4">
+                        <Share2 className="w-5 h-5 text-zinc-500 hover:text-yellow-400 cursor-pointer transition-colors" />
+                        <Heart className="w-5 h-5 text-zinc-500 hover:text-yellow-400 cursor-pointer transition-colors" />
+                      </div>
+                    </div>
 
-        {/* Right Column: Player Section & Health News */}
-        <div className="space-y-8 order-1 md:order-2">
-          <section className="relative aspect-square rounded-3xl overflow-hidden bg-zinc-900 border-2 border-yellow-400/30 shadow-[0_0_50px_-12px_rgba(250,204,21,0.2)]">
-            <audio 
-              ref={audioRef} 
-              src="http://ics.streamingmurah.com:8130/stream" 
-              preload="auto"
-              onPlay={() => setHasError(false)}
-              onError={() => {
-                setHasError(true);
-                setIsPlaying(false);
-              }}
-            />
-            {/* Animated Background Grid */}
-            <div className="absolute inset-0 opacity-20" 
-                 style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #facc15 1px, transparent 0)', backgroundSize: '24px 24px' }} />
-            
-            <div className="absolute inset-0 flex flex-col items-center justify-between p-8">
-              <div className="w-full flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-[10px] font-black tracking-[0.3em] text-yellow-400 uppercase">Live Now</span>
-                </div>
-                <div className="flex gap-4">
-                  <Share2 className="w-5 h-5 text-zinc-500 hover:text-yellow-400 cursor-pointer transition-colors" />
-                  <Heart className="w-5 h-5 text-zinc-500 hover:text-yellow-400 cursor-pointer transition-colors" />
-                </div>
-              </div>
+                    <div className="flex flex-col items-center gap-6">
+                      <div className="relative">
+                        {/* Visualizer Ring */}
+                        <AnimatePresence>
+                          {isPlaying && (
+                            <motion.div 
+                              initial={{ scale: 0.8, opacity: 0 }}
+                              animate={{ scale: 1.5, opacity: 0 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 1.5, repeat: Infinity }}
+                              className="absolute inset-0 border-2 border-yellow-400 rounded-full"
+                            />
+                          )}
+                        </AnimatePresence>
+                        
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => setIsPlaying(!isPlaying)}
+                          className="relative z-10 w-32 h-32 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(250,204,21,0.4)]"
+                        >
+                          {isPlaying ? (
+                            <Pause className="w-12 h-12 text-black fill-current" />
+                          ) : (
+                            <Play className="w-12 h-12 text-black fill-current ml-1" />
+                          )}
+                        </motion.button>
+                      </div>
+                      
+                      <div className="text-center px-4">
+                        <h2 className="text-2xl font-black italic tracking-tight text-white uppercase">Nang Kene Wae <br /> Nang Kene Wae</h2>
+                        <p className="text-yellow-400 font-bold text-xs tracking-widest mt-1">PANJALU 95.1 FM</p>
+                        
+                        {hasError && (
+                          <motion.div 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-4 p-2 bg-red-500/20 border border-red-500/50 rounded-lg"
+                          >
+                            <p className="text-[10px] text-red-400 font-bold uppercase leading-tight">
+                              Gagal memuat siaran.<br />Pastikan izin "Insecure Content" aktif di browser Anda.
+                            </p>
+                          </motion.div>
+                        )}
+                      </div>
+                    </div>
 
-              <div className="flex flex-col items-center gap-6">
-                <div className="relative">
-                  {/* Visualizer Ring */}
-                  <AnimatePresence>
-                    {isPlaying && (
-                      <motion.div 
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1.5, opacity: 0 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                        className="absolute inset-0 border-2 border-yellow-400 rounded-full"
+                    {/* Bottom Visualizer Bars */}
+                    <div className="w-full flex items-end justify-center gap-1 h-12">
+                      {[...Array(15)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          animate={{ height: isPlaying ? [8, 32, 12, 40, 16] : 8 }}
+                          transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.05 }}
+                          className="w-1.5 bg-yellow-400/40 rounded-full"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                {/* Health News Section */}
+                <section className="space-y-4">
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="flex items-center gap-4 py-2">
+                      <span className="text-[10px] font-black text-yellow-400 uppercase tracking-[0.4em] whitespace-nowrap">KESEHATAN</span>
+                      <div className="h-[1px] w-full bg-zinc-800" />
+                    </div>
+                  </div>
+                  <div className="flex gap-4 p-4 rounded-2xl bg-zinc-900/50 border border-zinc-800 hover:border-yellow-400/30 transition-all">
+                    <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+                      <img 
+                        src="https://picsum.photos/seed/health1/300/300" 
+                        alt="Health" 
+                        className="w-full h-full object-cover grayscale"
+                        referrerPolicy="no-referrer"
                       />
-                    )}
-                  </AnimatePresence>
-                  
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    className="relative z-10 w-32 h-32 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(250,204,21,0.4)]"
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-12 h-12 text-black fill-current" />
-                    ) : (
-                      <Play className="w-12 h-12 text-black fill-current ml-1" />
-                    )}
-                  </motion.button>
-                </div>
-                
-                <div className="text-center px-4">
-                  <h2 className="text-2xl font-black italic tracking-tight text-white uppercase">Nang Kene Wae <br /> Nang Kene Wae</h2>
-                  <p className="text-yellow-400 font-bold text-xs tracking-widest mt-1">PANJALU 95.1 FM</p>
-                  
-                  {hasError && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-4 p-2 bg-red-500/20 border border-red-500/50 rounded-lg"
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <h4 className="font-bold text-sm leading-snug text-zinc-100 line-clamp-2">
+                        Tips Menjaga Kesehatan Jantung dengan Pola Makan Sehat
+                      </h4>
+                      <span className="text-[9px] font-bold text-zinc-500 mt-1 uppercase tracking-tighter">5 Jam Lalu</span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="sosmed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="w-full h-[calc(100vh-180px)] p-4"
+            >
+              <div className="w-full h-full bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 relative">
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="text-center space-y-4">
+                    <Instagram className="w-12 h-12 text-zinc-700 mx-auto" />
+                    <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest">Memuat Instagram...</p>
+                    <p className="text-zinc-600 text-[10px] max-w-xs mx-auto">Instagram mungkin memblokir tampilan di dalam aplikasi. Jika tidak muncul, klik tombol di bawah.</p>
+                    <a 
+                      href="https://www.instagram.com/panjalu_fm/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-block px-6 py-2 bg-yellow-400 text-black text-[10px] font-black uppercase tracking-widest rounded-full pointer-events-auto"
                     >
-                      <p className="text-[10px] text-red-400 font-bold uppercase leading-tight">
-                        Gagal memuat siaran.<br />Pastikan izin "Insecure Content" aktif di browser Anda.
-                      </p>
-                    </motion.div>
-                  )}
+                      Buka di Instagram
+                    </a>
+                  </div>
                 </div>
-              </div>
-
-              {/* Bottom Visualizer Bars */}
-              <div className="w-full flex items-end justify-center gap-1 h-12">
-                {[...Array(15)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    animate={{ height: isPlaying ? [8, 32, 12, 40, 16] : 8 }}
-                    transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.05 }}
-                    className="w-1.5 bg-yellow-400/40 rounded-full"
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Health News Section */}
-          <section className="space-y-4">
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex items-center gap-4 py-2">
-              <span className="text-[10px] font-black text-yellow-400 uppercase tracking-[0.4em] whitespace-nowrap">KESEHATAN</span>
-              <div className="h-[1px] w-full bg-zinc-800" />
-            </div>
-            </div>
-            <div className="flex gap-4 p-4 rounded-2xl bg-zinc-900/50 border border-zinc-800 hover:border-yellow-400/30 transition-all">
-              <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
-                <img 
-                  src="https://picsum.photos/seed/health1/300/300" 
-                  alt="Health" 
-                  className="w-full h-full object-cover grayscale"
-                  referrerPolicy="no-referrer"
+                <iframe 
+                  src="https://www.instagram.com/panjalu_fm/embed" 
+                  className="w-full h-full relative z-10 border-none"
+                  title="Instagram Feed"
                 />
               </div>
-              <div className="flex flex-col justify-center">
-                <h4 className="font-bold text-sm leading-snug text-zinc-100 line-clamp-2">
-                  Tips Menjaga Kesehatan Jantung dengan Pola Makan Sehat
-                </h4>
-                <span className="text-[9px] font-bold text-zinc-500 mt-1 uppercase tracking-tighter">5 Jam Lalu</span>
-              </div>
-            </div>
-          </section>
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       {/* Bottom Navigation - Minimalist Dark */}
       <footer className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-xl border-t border-zinc-800 px-8 py-4 flex items-center justify-between z-50">
-        <button className="flex flex-col items-center gap-1 text-yellow-400">
+        <button 
+          onClick={() => setActiveTab('radio')}
+          className={cn(
+            "flex flex-col items-center gap-1 transition-colors",
+            activeTab === 'radio' ? "text-yellow-400" : "text-zinc-600 hover:text-yellow-400"
+          )}
+        >
           <Radio className="w-6 h-6" />
           <span className="text-[9px] font-black uppercase tracking-tighter">Radio</span>
         </button>
-        <button className="flex flex-col items-center gap-1 text-zinc-600 hover:text-yellow-400 transition-colors">
+        <button 
+          onClick={() => setActiveTab('sosmed')}
+          className={cn(
+            "flex flex-col items-center gap-1 transition-colors",
+            activeTab === 'sosmed' ? "text-yellow-400" : "text-zinc-600 hover:text-yellow-400"
+          )}
+        >
           <Instagram className="w-6 h-6" />
           <span className="text-[9px] font-black uppercase tracking-tighter">SOSMED</span>
         </button>
-        <div className="w-12 h-12 -mt-10 bg-yellow-400 rounded-2xl rotate-45 flex items-center justify-center shadow-[0_0_20px_rgba(250,204,21,0.3)]">
-          <Play className="w-6 h-6 text-black -rotate-45 ml-1 fill-current" />
+        <div 
+          onClick={() => setIsPlaying(!isPlaying)}
+          className="w-12 h-12 -mt-10 bg-yellow-400 rounded-2xl rotate-45 flex items-center justify-center shadow-[0_0_20px_rgba(250,204,21,0.3)] cursor-pointer"
+        >
+          {isPlaying ? (
+            <Pause className="w-6 h-6 text-black -rotate-45 fill-current" />
+          ) : (
+            <Play className="w-6 h-6 text-black -rotate-45 ml-1 fill-current" />
+          )}
         </div>
         <button className="flex flex-col items-center gap-1 text-zinc-600 hover:text-yellow-400 transition-colors">
           <Search className="w-6 h-6" />
