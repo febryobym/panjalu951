@@ -41,7 +41,7 @@ export default function App() {
     <div className="min-h-screen bg-black font-sans text-white flex flex-col">
       <audio 
         ref={audioRef} 
-        src="http://ics.streamingmurah.com:8130/stream" 
+        src="http://ics.streamingmurah.com:8090/stream" 
         preload="auto"
         onPlay={() => setHasError(false)}
         onError={() => {
